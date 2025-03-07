@@ -1,7 +1,6 @@
 // src/store/index.ts
 import { configureStore } from '@reduxjs/toolkit';
-// Placeholder for auth reducer (to be implemented later)
-const authReducer = (state = {}) => state;
+import { authReducer } from './authSlice';
 
 const store = configureStore({
   reducer: {

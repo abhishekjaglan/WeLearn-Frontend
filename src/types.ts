@@ -18,3 +18,9 @@ export interface authenticateData {
     password: string; 
     username?: string 
 }
+
+export interface NavItem {
+  to: string;
+  icon: React.ReactNode;
+  label: string;
+}

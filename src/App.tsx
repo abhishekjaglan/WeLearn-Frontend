@@ -14,6 +14,12 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/home" element={<Home />} />
         <Route path="/user" element={<UserPage />} />
+        {/* <Route path="/home" element={<div>Home Placeholder</div>} />
+        <Route path="/home/documents" element={<div>Documents Placeholder</div>} />
+        <Route path="/home/urls" element={<div>URLs Placeholder</div>} />
+        <Route path="/home/audio" element={<div>Audio Placeholder</div>} />
+        <Route path="/home/video" element={<div>Video Placeholder</div>} />
+        <Route path="/user" element={<div>User Placeholder</div>} /> */}
       </Routes>
     </BrowserRouter>
   );
