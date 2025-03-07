@@ -1,16 +1,28 @@
-import { createSlice } from '@reduxjs/toolkit';
+// src/store/authSlice.ts
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AuthState } from '../types';
+
+const initialState: AuthState = {
+  userId: null,
+  token: null,
+  isAuthenticated: false,
+};
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { userId: null as string | null, isAuthenticated: false },
+  initialState,
   reducers: {
-    login: (state, action) => {
-      state.userId = action.payload;
+    login: (state, action: PayloadAction<{ userId: string; token: string }>) => {
+      state.userId = action.payload.userId;
+      state.token = action.payload.token;
       state.isAuthenticated = true;
     },
     logout: (state) => {
       state.userId = null;
+      state.token = null;
       state.isAuthenticated = false;
+      Cookies.remove('userId');
+      Cookies.remove('token');
     },
   },
 });

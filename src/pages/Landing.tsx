@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { FeatureCard } from '../components/FeatureCards';
 import { FaFileAlt, FaHeadphones, FaLink } from 'react-icons/fa';
 
-const Landing: React.FC = () => {
+const Landing: React.FC = React.memo(() => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-primary to-neutral">
       {/* Navbar */}
@@ -109,6 +109,6 @@ const Landing: React.FC = () => {
       </footer>
     </div>
   );
-};
+});
 
 export default Landing;
