@@ -12,3 +12,9 @@ export interface AuthResponse {
 export interface AuthError {
     message: string;
   }
+
+export interface authenticateData { 
+    email: string; 
+    password: string; 
+    username?: string 
+}

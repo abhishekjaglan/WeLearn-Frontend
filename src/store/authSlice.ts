@@ -1,5 +1,6 @@
 // src/store/authSlice.ts
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 import { AuthState } from '../types';
 
 const initialState: AuthState = {
