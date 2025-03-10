@@ -24,3 +24,24 @@ export interface NavItem {
   icon: React.ReactNode;
   label: string;
 }
+
+export interface StatsCardProps {
+  title: string;
+  value: string | number;
+  icon: React.ReactNode;
+}
+
+export interface MediaItem {
+  id: string;
+  name: string;
+  type: string;
+  status: 'pending' | 'uploading' | 'done' | 'error';
+}
+
+export interface MediaState {
+  uploads: MediaItem[];
+}
+
+export interface PrivateRouteProps {
+  element: React.ReactElement;
+}
