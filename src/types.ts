@@ -1,8 +1,10 @@
 export interface AuthState {
-    userId: string | null;
-    token: string | null;
-    isAuthenticated: boolean;
-  }
+  userId: string | null;
+  token: string | null;
+  isAuthenticated: boolean;
+  name: string | null;
+  email: string | null;
+}
 
 export interface AuthResponse {
     userId: string;
@@ -100,4 +102,11 @@ export interface MediaCardProps {
 export interface URLInputProps {
   onSubmit: (url: string) => void;
   isLoading: boolean;
+}
+
+export interface Notification {
+  id: string;
+  message: string;
+  type: 'success' | 'error' | 'info';
+  timestamp: number;
 }
