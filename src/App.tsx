@@ -23,7 +23,8 @@ function App() {
         <Route path="/welcome" element={<Landing />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<PrivateRoute element={<Dashboard />} />} />
+        {/* <Route path="/" element={<PrivateRoute element={<Dashboard />} />} /> */}
+        <Route path='/' element={<Dashboard />} />
         {/* <Route path="/user" element={<UserPage />} /> */}
         {/* <Route path="/home" element={<div>Home Placeholder</div>} />
         <Route path="/home/documents" element={<div>Documents Placeholder</div>} />
