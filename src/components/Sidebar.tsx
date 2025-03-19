@@ -26,7 +26,7 @@ const Sidebar: React.FC = React.memo(() => {
         } transition-transform duration-300 ease-in-out z-40`}
       >
         <div className="flex justify-between items-center p-6 border-b border-gray-700">
-          <h3 className="text-xl font-semibold">Menu</h3>
+          <h3 className="text-xl font-semibold text-red-600">Menu</h3>
           <button
             onClick={toggleSidebar}
             className="text-2xl text-accent hover:text-white transition-colors duration-300 focus:outline-none"
