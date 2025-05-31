@@ -196,3 +196,26 @@
         min-width: auto;
     }
 }
+
+.wl-document-upload:hover {
+    border-color: var(--wl-primary-dark);
+}
+
+.wl-url-parsing {
+    border-bottom: 1px solid var(--wl-border-subtle);
+    padding-bottom: 24px;
+}
+
+.wl-summary-section {
+    min-height: 300px;
+}
+
+@media (max-width: 767px) {
+    .wl-document-upload {
+        padding: 16px;
+    }
+
+    .wl-url-parsing h3 {
+        fontSize: '16px';
+    }
+}
