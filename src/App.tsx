@@ -8,6 +8,10 @@ import UserInfo from './pages/UserInfo';
 import { WELEARN_ROUTES } from './utils/welearn-constants';
 import './App.css';
 import './styles/welearn-core.css';
+import Dashboard from './pages/Dashboard';
+import Documents from './pages/Documents';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -19,6 +23,10 @@ function App() {
           <Route path={WELEARN_ROUTES.SIGN_IN} element={<SignIn />} />
           <Route path={WELEARN_ROUTES.SIGN_UP} element={<SignUp />} />
           <Route path={WELEARN_ROUTES.USER_INFO} element={<UserInfo />} />
+          <Route path={WELEARN_ROUTES.DASHBOARD} element={<Dashboard />} />
+          <Route path={WELEARN_ROUTES.DOCUMENTS} element={<Documents />} />
+          <Route path={WELEARN_ROUTES.SETTINGS} element={<Settings />} />
+          <Route path={WELEARN_ROUTES.PROFILE} element={<Profile />} />
           <Route path="*" element={<Home />} />
         </Routes>
       </div>
