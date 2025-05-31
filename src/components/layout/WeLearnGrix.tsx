@@ -11,7 +11,7 @@ interface ColProps {
   tablet?: number;
   desktop?: number;
   className?: string;
-}
+};
 
 export const WeLearnRow: React.FC<GridProps> = ({ children, className = '' }) => {
   return (
