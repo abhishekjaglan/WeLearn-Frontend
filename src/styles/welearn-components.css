@@ -1,0 +1,119 @@
+.wl-sidebar-container {
+    position: relative;
+    height: 100vh;
+    background-color: var(--wl-primary-dark);
+    color: var(--wl-text-primary);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.wl-sidebar-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.wl-sidebar-desktop {
+    position: relative;
+    width: 320px;
+}
+
+.wl-nav-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.wl-nav-item:hover {
+    background-color: var(--wl-secondary-dark);
+}
+
+.wl-nav-item-active {
+    background-color: var(--wl-accent-dark);
+    border-right: 3px solid var(--wl-text-primary);
+}
+
+.wl-nav-icon {
+    margin-right: 12px;
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+}
+
+.wl-nav-text {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.wl-sidebar-collapsed .wl-nav-text {
+    display: none;
+}
+
+.wl-sidebar-header {
+    flex-shrink: 0;
+}
+
+.wl-sidebar-content {
+    scrollbar-width: thin;
+    scrollbar-color: var(--wl-secondary-dark) transparent;
+}
+
+.wl-sidebar-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.wl-sidebar-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.wl-sidebar-content::-webkit-scrollbar-thumb {
+    background-color: var(--wl-secondary-dark);
+    border-radius: 3px;
+}
+
+.wl-sidebar-overlay {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.wl-sidebar-collapsed {
+    width: 80px !important;
+}
+
+.wl-sidebar-collapsed .wl-nav-icon {
+    margin-right: 0;
+}
+
+@media (max-width: 767px) {
+    .wl-sidebar-desktop {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .wl-sidebar-mobile {
+        position: relative;
+        transform: translateX(0) !important;
+    }
+
+    .wl-sidebar-overlay {
+        display: none;
+    }
+}
