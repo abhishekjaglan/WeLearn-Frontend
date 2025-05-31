@@ -1,0 +1,135 @@
+.wl-app {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--wl-light-surface);
+}
+
+.wl-app * {
+    box-sizing: border-box;
+}
+
+.wl-app img {
+    max-width: 100%;
+    height: auto;
+}
+
+.wl-app h1,
+.wl-app h2,
+.wl-app h3,
+.wl-app h4,
+.wl-app h5,
+.wl-app h6 {
+    color: var(--wl-text-dark);
+    line-height: 1.3;
+}
+
+.wl-app p {
+    color: var(--wl-text-dark);
+    line-height: 1.6;
+    margin: 0 0 16px 0;
+}
+
+.wl-app a {
+    color: var(--wl-primary-dark);
+    text-decoration: none;
+    transition: var(--wl-transition-smooth);
+}
+
+.wl-app a:hover {
+    text-decoration: underline;
+}
+
+.wl-app button:focus,
+.wl-app input:focus,
+.wl-app textarea:focus {
+    outline: 2px solid var(--wl-primary-dark);
+    outline-offset: 2px;
+}
+
+@media (max-width: 767px) {
+    .wl-app {
+        overflow-x: hidden;
+    }
+
+    .wl-app .wl-sidebar-container {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+}
+
+.wl-loading {
+    opacity: 0.6;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.wl-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2;
+}
+
+.wl-success {
+    border-color: #10b981 !important;
+    background-color: #f0fdf4;
+}
+
+/* Animation for content loading */
+.wl-fade-in {
+    animation: fadeInContent 0.5s ease-in-out;
+}
+
+@keyframes fadeInContent {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wl-slide-up {
+    animation: slideUpContent 0.4s ease-out;
+}
+
+@keyframes slideUpContent {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.wl-focus-visible:focus-visible {
+    outline: 2px solid var(--wl-primary-dark);
+    outline-offset: 2px;
+    border-radius: var(--wl-radius-standard);
+}
+
+@media print {
+
+    .wl-sidebar-container,
+    .wl-welcome-bar,
+    .wl-modal-backdrop,
+    .wl-toast {
+        display: none !important;
+    }
+
+    .wl-app {
+        background: white !important;
+        color: black !important;
+    }
+
+    .wl-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+    }
+}

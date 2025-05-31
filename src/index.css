@@ -1,20 +1,38 @@
 @import "tailwindcss";
-@import "./styles/welearn-core.css";
+@import url('./styles/welearn-core.css');
+@import url('./styles/welearn-components.css');
+@import url('./styles/welearn-animations.css');
+@import url('./styles/welearn-responsive.css');
 
-/* Remove Material Tailwind imports */
-/* Custom global overrides */
-* {
-  box-sizing: border-box;
-}
-
+html,
 body {
   margin: 0;
+  padding: 0;
+  min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--wl-light-surface);
+  color: var(--wl-text-dark);
 }
 
 #root {
   min-height: 100vh;
   width: 100%;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--wl-light-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--wl-border-subtle);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--wl-secondary-dark);
 }
