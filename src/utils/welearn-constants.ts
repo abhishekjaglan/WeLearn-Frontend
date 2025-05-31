@@ -79,4 +79,4 @@ export const DESKTOP_SIDEBAR_CONFIG = {
   COLLAPSED_WIDTH: 80,
   EXPANDED_WIDTH: 320,
   HEADER_HEIGHT: 64
-} as const;
+} as const
