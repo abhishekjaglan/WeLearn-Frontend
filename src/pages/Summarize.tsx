@@ -1,55 +1,101 @@
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import InputMethodSelector from '../components/summarize/InputMethodSelector';
-import DynamicContentArea from '../components/summarize/DynamicContentArea';
-import DetailLevelSelector from '../components/summarize/DetailLevelSelector';
+import React, { useState } from 'react';
 
-type InputMethod = 'url' | 'document' | 'text';
-type DetailLevel = 'short' | 'medium' | 'detailed';
+type SummarizeOption = 'url' | 'file' | 'text';
 
-const Summarize = () => {
-  const [selectedMethod, setSelectedMethod] = useState<InputMethod>('url');
-  const [detailLevel, setDetailLevel] = useState<DetailLevel>('medium');
-  const [isProcessing, setIsProcessing] = useState(false);
-  const [summary, setSummary] = useState<string | null>(null);
+const Summarize: React.FC = () => {
+  const [option, setOption] = useState<SummarizeOption>('url');
+  const [url, setUrl] = useState<string>('');
+  const [file, setFile] = useState<File | null>(null);
+  const [text, setText] = useState<string>('');
+  const [summary, setSummary] = useState<string>('');
 
-  const handleSubmit = (content: string, type: InputMethod) => {
-    console.log('Submitting:', { content, type, detailLevel });
-    // Will implement API calls in Phase 8
+  const handleSubmit = async () => {
+    let data: any;
+    if (option === 'url') data = { url };
+    else if (option === 'file') data = { file: file ? file.name : '' };
+    else data = { text };
+
+    // Mock API call
+    setSummary(`Summary of ${option === 'url' ? url : option === 'file' ? (file ? file.name : 'no file') : 'pasted text'}`);
   };
 
   return (
-    <motion.div
-      className="min-h-screen bg-gray-50 py-8"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Summarize Content</h1>
-          <p className="text-gray-600">Choose your input method and get AI-powered summaries</p>
-        </div>
-        <div className="space-y-6">
-          <InputMethodSelector
-            selectedMethod={selectedMethod}
-            onMethodChange={setSelectedMethod}
-          />
-          <DynamicContentArea
-            selectedMethod={selectedMethod}
-            isProcessing={isProcessing}
-            hasSummary={!!summary}
-            onSubmit={handleSubmit}
-          />
-
-          <DetailLevelSelector
-            selectedLevel={detailLevel}
-            onLevelChange={setDetailLevel}
-            isCompressed={!!summary}
-          />
-        </div>
+    <div className="pt-20 p-6">
+      {/* Option Selector */}
+      <div className="flex justify-center space-x-4 mb-6">
+        <button
+          onClick={() => setOption('url')}
+          className={`px-4 py-2 ${option === 'url' ? 'bg-teal-500 text-white' : 'bg-gray-200'}`}
+        >
+          Parse URL
+        </button>
+        <button
+          onClick={() => setOption('file')}
+          className={`px-4 py-2 ${option === 'file' ? 'bg-teal-500 text-white' : 'bg-gray-200'}`}
+        >
+          Select Document
+        </button>
+        <button
+          onClick={() => setOption('text')}
+          className={`px-4 py-2 ${option === 'text' ? 'bg-teal-500 text-white' : 'bg-gray-200'}`}
+        >
+          Paste Text
+        </button>
       </div>
-    </motion.div>
+      {/* Input Sections */}
+      {option === 'url' && (
+        <div className="flex flex-col items-center">
+          <input
+            type="text"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="Enter URL"
+            className="w-full max-w-md p-2 border rounded mb-4"
+          />
+          <button
+            onClick={handleSubmit}
+            className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+          >
+            Summarize
+          </button>
+        </div>
+      )}
+      {option === 'file' && (
+        <div className="flex flex-col items-center">
+          <input
+            type="file"
+            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+            className="mb-4"
+          />
+          <button
+            onClick={handleSubmit}
+            className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+          >
+            Summarize
+          </button>
+        </div>
+      )}
+      {option === 'text' && (
+        <div className="flex flex-col items-center">
+          <textarea
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            placeholder="Paste your text here"
+            className="w-full max-w-md p-2 border rounded mb-4 h-32"
+          />
+          <button
+            onClick={handleSubmit}
+            className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+          >
+            Summarize
+          </button>
+        </div>
+      )}
+      {/* Summary Output */}
+      {summary && (
+        <div className="mt-6 p-4 bg-gray-100 rounded">{summary}</div>
+      )}
+    </div>
   );
 };
 

@@ -1,21 +1,53 @@
-import { motion } from 'framer-motion';
-import HeroSection from '../components/dashboard/HeroSection';
-import ActivityFeed from '../components/dashboard/ActivityFeed';
-const Dashboard = () => {
-    return (
-        <motion.div
-            className="min-h-screen"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-        >
-            <HeroSection />
+import React, { useState, useEffect } from 'react';
+import type { Page } from '../App';
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <ActivityFeed />
+interface ActivityItem {
+  id: number;
+  title: string;
+  timestamp: string;
+}
+
+interface DashboardProps {
+  setPage: (page: Page) => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ setPage }) => {
+  const [activity, setActivity] = useState<ActivityItem[]>([]);
+
+  useEffect(() => {
+    // Mock API call for activity
+    setActivity([
+      { id: 1, title: "Example.com", timestamp: "Oct 20, 2023, 3:45 PM" },
+      { id: 2, title: "Pasted Text", timestamp: "Oct 19, 2023, 10:12 AM" }
+    ]);
+  }, []);
+
+  return (
+    <div className="pt-20">
+      {/* Landing Section */}
+      <div className="bg-gray-100 p-6 text-center">
+        <h1 className="text-3xl font-bold mb-4">Welcome to WeLearn</h1>
+        <button
+          onClick={() => setPage('summarize')}
+          className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+        >
+          Start Summarizing
+        </button>
+      </div>
+      {/* Activity Section */}
+      <div className="p-6">
+        <h2 className="text-2xl font-semibold mb-4">Your Activity</h2>
+        <div className="space-y-4">
+          {activity.map(item => (
+            <div key={item.id} className="p-4 bg-white shadow rounded">
+              <p className="font-medium">{item.title}</p>
+              <p className="text-gray-600 text-sm">{item.timestamp}</p>
             </div>
-        </motion.div>
-    );
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;
