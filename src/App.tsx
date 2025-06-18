@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import Dashboard from './pages/Dashboard';
-import Summarize from './pages/Summarize';
+import { useState } from 'react'
+import Navbar from './components/Navbar'
+import Dashboard from './pages/Dashboard'
+import Summarize from './pages/Summarize'
 
-export type Page = 'dashboard' | 'summarize';
+export type Page = 'dashboard' | 'summarize'
 
-const App: React.FC = () => {
-  const [page, setPage] = useState<Page>('dashboard');
+function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('dashboard')
 
   return (
-    <div>
-      <Navbar setPage={setPage} />
-      {page === 'dashboard' ? <Dashboard setPage={setPage} /> : <Summarize />}
+    <div className="min-h-screen bg-white">
+      <Navbar setPage={setCurrentPage} />
+      {currentPage === 'dashboard' ? (
+        <Dashboard setPage={setCurrentPage} />
+      ) : (
+        <Summarize />
+      )}
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

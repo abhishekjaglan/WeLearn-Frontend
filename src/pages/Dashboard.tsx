@@ -23,25 +23,32 @@ const Dashboard: React.FC<DashboardProps> = ({ setPage }) => {
   }, []);
 
   return (
-    <div className="pt-20">
+    <div className="pt-20 animate-fade-in">
       {/* Landing Section */}
-      <div className="bg-gray-100 p-6 text-center">
-        <h1 className="text-3xl font-bold mb-4">Welcome to WeLearn</h1>
+      <div className="bg-primary-50 p-8 text-center animate-slide-down">
+        <h1 className="text-4xl font-display font-bold mb-6 text-primary-900">Welcome to WeLearn</h1>
+        <p className="text-secondary-600 mb-8 max-w-2xl mx-auto">
+          Your AI-powered learning companion. Get instant summaries and insights from any content.
+        </p>
         <button
           onClick={() => setPage('summarize')}
-          className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
+          className="btn btn-primary text-lg px-8 py-3"
         >
           Start Summarizing
         </button>
       </div>
+
       {/* Activity Section */}
-      <div className="p-6">
-        <h2 className="text-2xl font-semibold mb-4">Your Activity</h2>
+      <div className="p-8 max-w-4xl mx-auto">
+        <h2 className="text-3xl font-display font-bold mb-6 text-secondary-900">Your Activity</h2>
         <div className="space-y-4">
           {activity.map(item => (
-            <div key={item.id} className="p-4 bg-white shadow rounded">
-              <p className="font-medium">{item.title}</p>
-              <p className="text-gray-600 text-sm">{item.timestamp}</p>
+            <div 
+              key={item.id} 
+              className="card p-6 hover:shadow-lg transition-all duration-200 animate-slide-up"
+            >
+              <p className="font-medium text-lg text-secondary-900">{item.title}</p>
+              <p className="text-secondary-500 text-sm mt-1">{item.timestamp}</p>
             </div>
           ))}
         </div>

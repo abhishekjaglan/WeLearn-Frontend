@@ -20,80 +20,91 @@ const Summarize: React.FC = () => {
   };
 
   return (
-    <div className="pt-20 p-6">
+    <div className="pt-20 p-8 max-w-4xl mx-auto animate-fade-in">
       {/* Option Selector */}
-      <div className="flex justify-center space-x-4 mb-6">
+      <div className="flex justify-center space-x-4 mb-8 animate-slide-down">
         <button
           onClick={() => setOption('url')}
-          className={`px-4 py-2 ${option === 'url' ? 'bg-teal-500 text-white' : 'bg-gray-200'}`}
+          className={`btn ${option === 'url' ? 'btn-primary' : 'btn-secondary'}`}
         >
           Parse URL
         </button>
         <button
           onClick={() => setOption('file')}
-          className={`px-4 py-2 ${option === 'file' ? 'bg-teal-500 text-white' : 'bg-gray-200'}`}
+          className={`btn ${option === 'file' ? 'btn-primary' : 'btn-secondary'}`}
         >
           Select Document
         </button>
         <button
           onClick={() => setOption('text')}
-          className={`px-4 py-2 ${option === 'text' ? 'bg-teal-500 text-white' : 'bg-gray-200'}`}
+          className={`btn ${option === 'text' ? 'btn-primary' : 'btn-secondary'}`}
         >
           Paste Text
         </button>
       </div>
+
       {/* Input Sections */}
-      {option === 'url' && (
-        <div className="flex flex-col items-center">
-          <input
-            type="text"
-            value={url}
-            onChange={(e) => setUrl(e.target.value)}
-            placeholder="Enter URL"
-            className="w-full max-w-md p-2 border rounded mb-4"
-          />
-          <button
-            onClick={handleSubmit}
-            className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
-          >
-            Summarize
-          </button>
-        </div>
-      )}
-      {option === 'file' && (
-        <div className="flex flex-col items-center">
-          <input
-            type="file"
-            onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-            className="mb-4"
-          />
-          <button
-            onClick={handleSubmit}
-            className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
-          >
-            Summarize
-          </button>
-        </div>
-      )}
-      {option === 'text' && (
-        <div className="flex flex-col items-center">
-          <textarea
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Paste your text here"
-            className="w-full max-w-md p-2 border rounded mb-4 h-32"
-          />
-          <button
-            onClick={handleSubmit}
-            className="bg-teal-500 text-white px-4 py-2 rounded hover:bg-teal-600"
-          >
-            Summarize
-          </button>
-        </div>
-      )}
+      <div className="animate-slide-up">
+        {option === 'url' && (
+          <div className="flex flex-col items-center">
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="Enter URL"
+              className="input mb-6"
+            />
+            <button
+              onClick={handleSubmit}
+              className="btn btn-primary"
+            >
+              Summarize
+            </button>
+          </div>
+        )}
+
+        {option === 'file' && (
+          <div className="flex flex-col items-center">
+            <div className="w-full max-w-md mb-6">
+              <input
+                type="file"
+                onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+                className="input"
+              />
+            </div>
+            <button
+              onClick={handleSubmit}
+              className="btn btn-primary"
+            >
+              Summarize
+            </button>
+          </div>
+        )}
+
+        {option === 'text' && (
+          <div className="flex flex-col items-center">
+            <textarea
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Paste your text here"
+              className="input h-32 mb-6"
+            />
+            <button
+              onClick={handleSubmit}
+              className="btn btn-primary"
+            >
+              Summarize
+            </button>
+          </div>
+        )}
+      </div>
+
       {/* Summary Output */}
       {summary && (
-        <div className="mt-6 p-4 bg-gray-100 rounded">{summary}</div>
+        <div className="mt-8 card p-6 animate-fade-in">
+          <h3 className="text-xl font-display font-bold mb-4 text-secondary-900">Summary</h3>
+          <p className="text-secondary-700 leading-relaxed">{summary}</p>
+        </div>
       )}
     </div>
   );
