@@ -1,54 +1,101 @@
-# React + TypeScript + Vite
+# WeLearn Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A beautiful, minimal frontend for the WeLearn AI summarization service built with React, TypeScript, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Dashboard**: Welcome section and activity history
+- **Summarization**: Three input methods (URL, Document Upload, Text Input)
+- **Responsive Design**: Works seamlessly on all screen sizes
+- **Vibrant UI**: Beautiful gradients and smooth animations
+- **Real-time Results**: Inline summary display with statistics
 
-## Expanding the ESLint configuration
+## Tech Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- React 18 with TypeScript
+- Tailwind CSS for styling
+- Responsive design patterns
+- Modern React hooks for state management
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Setup Instructions
+
+1. **Install Dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Start Development Server**
+
+   ```bash
+   npm start
+   ```
+
+3. **Build for Production**
+   ```bash
+   npm run build
+   ```
+
+## Backend Integration
+
+Make sure your WeLearn backend is running on `http://localhost:5000` with the following endpoints:
+
+- `GET /api/activities` - Fetch user activity history
+- `POST /api/summarize/url` - Summarize from URL
+- `POST /api/summarize/document` - Summarize uploaded document
+- `POST /api/summarize/text` - Summarize text input
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── Navbar.tsx      # Navigation component
+│   ├── Dashboard.tsx   # Dashboard with activity history
+│   └── Summarize.tsx   # Summarization interface
+├── App.tsx             # Main app component
+├── App.css             # Custom styles
+└── index.tsx           # Entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Features Overview
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Dashboard
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- Vibrant welcome section with gradient background
+- Activity history cards showing past summaries
+- Different icons and colors for each summary type
+- Loading states and empty states
+
+### Summarize Page
+
+- Three input method selection (URL, Document, Text)
+- Beautiful form inputs with proper validation
+- Inline results display with summary statistics
+- Error handling with user-friendly messages
+- Loading states with animated spinners
+
+### Responsive Design
+
+- Mobile-first approach
+- Adaptive layouts for tablet and desktop
+- Touch-friendly buttons and inputs
+- Optimized typography scaling
+
+## Customization
+
+The color scheme uses vibrant gradients:
+
+- Purple to Blue for primary elements
+- Green for document-related features
+- Cyan for URL-related features
+- Pink for text-related features
+
+You can customize colors in `tailwind.config.js` and component files.
+
+## Performance
+
+- Optimized bundle size with tree shaking
+- Lazy loading for better performance
+- Efficient re-renders with proper React patterns
+- CSS-in-JS with Tailwind for minimal runtime overhead
