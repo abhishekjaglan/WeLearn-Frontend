@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 
 type InputMethod = 'url' | 'document' | 'text';
+type DetailLevel = 'short' | 'medium' | 'detailed';
 
 interface SummaryResult {
   summary: string;
-  originalLength: number;
-  summaryLength: number;
+  recordId: number;
 }
 
 const Summarize: React.FC = () => {
-  const [activeMethod, setActiveMethod] = useState<InputMethod>('url');
+  const [activeMethod, setActiveMethod] = useState<InputMethod>('document');
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<SummaryResult | null>(null);
   const [error, setError] = useState<string>('');
@@ -18,6 +18,8 @@ const Summarize: React.FC = () => {
   const [url, setUrl] = useState('');
   const [text, setText] = useState('');
   const [file, setFile] = useState<File | null>(null);
+  const [detailLevel, setDetailLevel] = useState<DetailLevel>('medium');
+  const [userId, setUserId] = useState('demo-user-123'); // For demo purposes
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -29,29 +31,32 @@ const Summarize: React.FC = () => {
       let body: FormData | string = '';
       let headers: HeadersInit = {};
 
-      if (activeMethod === 'url') {
-        endpoint = 'http://localhost:5000/api/summarize/url';
-        headers = { 'Content-Type': 'application/json' };
-        body = JSON.stringify({ url });
-      } else if (activeMethod === 'text') {
-        endpoint = 'http://localhost:5000/api/summarize/text';
-        headers = { 'Content-Type': 'application/json' };
-        body = JSON.stringify({ text });
-      } else if (activeMethod === 'document' && file) {
-        endpoint = 'http://localhost:5000/api/summarize/document';
+      if (activeMethod === 'document' && file) {
+        endpoint = 'http://localhost:3001/api/summarize';
         const formData = new FormData();
-        formData.append('document', file);
+        formData.append('file', file);
+        formData.append('data', JSON.stringify({
+          detailLevel,
+          userId
+        }));
         body = formData;
+        // Don't set Content-Type header for FormData, let browser set it with boundary
+      } else if (activeMethod === 'url') {
+        // URL and text methods would need separate backend endpoints
+        // For now, focusing on document upload as requested
+        throw new Error('URL summarization not implemented yet');
+      } else if (activeMethod === 'text') {
+        throw new Error('Text summarization not implemented yet');
       }
 
       const response = await fetch(endpoint, {
         method: 'POST',
-        headers,
         body,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate summary');
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Failed to generate summary');
       }
 
       const data = await response.json();
@@ -65,9 +70,8 @@ const Summarize: React.FC = () => {
 
   const isSubmitDisabled = () => {
     if (loading) return true;
-    if (activeMethod === 'url') return !url.trim();
-    if (activeMethod === 'text') return !text.trim();
-    if (activeMethod === 'document') return !file;
+    if (activeMethod === 'document') return !file || !userId.trim();
+    // Other methods disabled for now
     return true;
   };
 
@@ -105,82 +109,102 @@ const Summarize: React.FC = () => {
           <button
             key={method}
             onClick={() => setActiveMethod(method)}
+            disabled={method !== 'document'} // Only document method implemented
             className={`p-6 rounded-2xl border-2 transition-all duration-300 ${
               activeMethod === method
                 ? 'border-transparent bg-gradient-to-r ' + getMethodColor(method) + ' text-white shadow-lg transform scale-105'
-                : 'border-gray-200 bg-white hover:border-purple-300 hover:shadow-md'
+                : method === 'document' 
+                  ? 'border-gray-200 bg-white hover:border-purple-300 hover:shadow-md'
+                  : 'border-gray-100 bg-gray-50 text-gray-400 cursor-not-allowed'
             }`}
           >
             <div className="text-3xl mb-2">{getMethodIcon(method)}</div>
             <h3 className="font-semibold text-lg capitalize mb-1">{method}</h3>
-            <p className={`text-sm ${activeMethod === method ? 'text-white/80' : 'text-gray-600'}`}>
-              {method === 'url' && 'Paste any URL to summarize'}
+            <p className={`text-sm ${activeMethod === method ? 'text-white/80' : method === 'document' ? 'text-gray-600' : 'text-gray-400'}`}>
+              {method === 'url' && 'Coming soon...'}
               {method === 'document' && 'Upload PDF, TXT, or DOCX'}
-              {method === 'text' && 'Type or paste your text'}
+              {method === 'text' && 'Coming soon...'}
             </p>
           </button>
         ))}
       </div>
 
+      {/* Configuration Section */}
+      <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
+        <h3 className="text-xl font-semibold text-gray-700 mb-6">Configuration</h3>
+        
+        {/* Detail Level Selection */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold text-gray-700 mb-4">
+            📊 Summary Detail Level
+          </label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            {(['short', 'medium', 'detailed'] as DetailLevel[]).map((level) => (
+              <button
+                key={level}
+                onClick={() => setDetailLevel(level)}
+                className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+                  detailLevel === level
+                    ? 'border-purple-500 bg-purple-50 text-purple-700'
+                    : 'border-gray-200 bg-white hover:border-purple-300 text-gray-600'
+                }`}
+              >
+                <div className="font-semibold capitalize">{level}</div>
+                <div className="text-sm">
+                  {level === 'short' && 'Quick overview'}
+                  {level === 'medium' && 'Balanced summary'}
+                  {level === 'detailed' && 'Comprehensive analysis'}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* User ID Input */}
+        <div className="mb-6">
+          <label className="block text-lg font-semibold text-gray-700 mb-4">
+            👤 User ID
+          </label>
+          <input
+            type="text"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)}
+            placeholder="Enter your user ID"
+            className="w-full p-4 border-2 border-gray-200 rounded-xl text-lg focus:border-purple-500 focus:outline-none transition-colors"
+          />
+        </div>
+      </div>
+
       {/* Input Section */}
       <div className="bg-white rounded-2xl p-8 shadow-lg mb-8">
-        {activeMethod === 'url' && (
-          <div>
-            <label className="block text-lg font-semibold text-gray-700 mb-4">
-              🔗 Enter URL to Summarize
-            </label>
+        <div>
+          <label className="block text-lg font-semibold text-gray-700 mb-4">
+            📄 Upload Document
+          </label>
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-400 transition-colors">
             <input
-              type="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com/article"
-              className="w-full p-4 border-2 border-gray-200 rounded-xl text-lg focus:border-blue-500 focus:outline-none transition-colors"
+              type="file"
+              accept=".pdf,.txt,.docx"
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
+              className="hidden"
+              id="file-upload"
             />
-          </div>
-        )}
-
-        {activeMethod === 'document' && (
-          <div>
-            <label className="block text-lg font-semibold text-gray-700 mb-4">
-              📄 Upload Document
+            <label htmlFor="file-upload" className="cursor-pointer">
+              <div className="text-4xl mb-4">📁</div>
+              {file ? (
+                <div>
+                  <p className="text-lg text-green-600 font-medium mb-2">{file.name}</p>
+                  <p className="text-sm text-gray-500">Size: {(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                </div>
+              ) : (
+                <>
+                  <p className="text-lg text-gray-600 mb-2">Click to upload or drag and drop</p>
+                  <p className="text-sm text-gray-500">PDF, TXT, DOCX files supported</p>
+                </>
+              )}
             </label>
-            <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-green-400 transition-colors">
-              <input
-                type="file"
-                accept=".pdf,.txt,.docx"
-                onChange={(e) => setFile(e.target.files?.[0] || null)}
-                className="hidden"
-                id="file-upload"
-              />
-              <label htmlFor="file-upload" className="cursor-pointer">
-                <div className="text-4xl mb-4">📁</div>
-                {file ? (
-                  <p className="text-lg text-green-600 font-medium">{file.name}</p>
-                ) : (
-                  <>
-                    <p className="text-lg text-gray-600 mb-2">Click to upload or drag and drop</p>
-                    <p className="text-sm text-gray-500">PDF, TXT, DOCX files supported</p>
-                  </>
-                )}
-              </label>
-            </div>
           </div>
-        )}
-
-        {activeMethod === 'text' && (
-          <div>
-            <label className="block text-lg font-semibold text-gray-700 mb-4">
-              📝 Enter Text to Summarize
-            </label>
-            <textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Paste your text here..."
-              rows={8}
-              className="w-full p-4 border-2 border-gray-200 rounded-xl text-lg focus:border-purple-500 focus:outline-none transition-colors resize-none"
-            />
-          </div>
-        )}
+        </div>
 
         {/* Submit Button */}
         <button
@@ -189,16 +213,16 @@ const Summarize: React.FC = () => {
           className={`w-full mt-6 py-4 rounded-xl font-semibold text-lg transition-all duration-300 ${
             isSubmitDisabled()
               ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-              : 'bg-gradient-to-r ' + getMethodColor(activeMethod) + ' text-white hover:shadow-lg transform hover:-translate-y-1'
+              : 'bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg transform hover:-translate-y-1'
           }`}
         >
           {loading ? (
             <div className="flex items-center justify-center">
               <div className="animate-spin rounded-full h-6 w-6 border-2 border-white border-t-transparent mr-3"></div>
-              Generating Summary...
+              Processing Document...
             </div>
           ) : (
-            'Generate Summary ✨'
+            'Summarize Document ✨'
           )}
         </button>
       </div>
@@ -225,19 +249,42 @@ const Summarize: React.FC = () => {
           </div>
           
           <div className="bg-white rounded-xl p-6 mb-6">
-            <p className="text-gray-800 leading-relaxed text-lg">{result.summary}</p>
+            <div className="flex justify-between items-center mb-4">
+              <h4 className="text-lg font-semibold text-gray-700">Summary</h4>
+              <span className="text-sm text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+                Detail Level: {detailLevel}
+              </span>
+            </div>
+            <p className="text-gray-800 leading-relaxed text-lg whitespace-pre-wrap">{result.summary}</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-white rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-blue-600">{result.originalLength}</div>
-              <div className="text-sm text-gray-600">Original Length</div>
+              <div className="text-2xl font-bold text-blue-600">{result.recordId}</div>
+              <div className="text-sm text-gray-600">Record ID</div>
             </div>
             <div className="bg-white rounded-xl p-4 text-center">
-              <div className="text-2xl font-bold text-green-600">{result.summaryLength}</div>
-              <div className="text-sm text-gray-600">Summary Length</div>
+              <div className="text-2xl font-bold text-green-600">{result.summary.length}</div>
+              <div className="text-sm text-gray-600">Summary Length (chars)</div>
             </div>
           </div>
+
+          {file && (
+            <div className="mt-4 bg-white rounded-xl p-4">
+              <h5 className="font-semibold text-gray-700 mb-2">Document Info</h5>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
+                <div>
+                  <span className="font-medium">Filename:</span> {file.name}
+                </div>
+                <div>
+                  <span className="font-medium">Size:</span> {(file.size / 1024 / 1024).toFixed(2)} MB
+                </div>
+                <div>
+                  <span className="font-medium">Type:</span> {file.type}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
