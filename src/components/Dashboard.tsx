@@ -19,7 +19,7 @@ const Dashboard: React.FC = () => {
   const fetchActivities = async () => {
     try {
       // Replace with your actual backend endpoint
-      const response = await fetch('http://localhost:5000/api/activities');
+      const response = await fetch('http://localhost:3001/record/:userId');
       const data = await response.json();
       setActivities(data);
     } catch (error) {

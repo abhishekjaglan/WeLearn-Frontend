@@ -15,8 +15,8 @@ const Summarize: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   // Form states
-  const [url, setUrl] = useState('');
-  const [text, setText] = useState('');
+  // const [url, setUrl] = useState('');
+  // const [text, setText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [detailLevel, setDetailLevel] = useState<DetailLevel>('medium');
   const [userId, setUserId] = useState('demo-user-123'); // For demo purposes
@@ -29,7 +29,7 @@ const Summarize: React.FC = () => {
     try {
       let endpoint = '';
       let body: FormData | string = '';
-      let headers: HeadersInit = {};
+      // let headers: HeadersInit = {};
 
       if (activeMethod === 'document' && file) {
         endpoint = 'http://localhost:3001/api/summarize';
