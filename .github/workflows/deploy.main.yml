@@ -18,5 +18,6 @@ jobs:
         run: npm run build
       - name: Deploy build
         run: |
-          rm -rf /home/ec2-user/welearn/app/frontend/build
-          cp -r build /home/ec2-user/welearn/app/frontend/
+          rm -rf /home/ec2-user/welearn/app/WeLearn-Frontend/build
+          cd /home/ec2-user/welearn/runners/frontend/_work/WeLearn-Frontend/WeLearn-Frontend
+          cp -r build /home/ec2-user/welearn/app/WeLearn-Frontend/
